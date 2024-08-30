@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,87 +8,112 @@
 </head>
 
 <body>
-    <h1>PM REQUEST</h1>
+    <h1>PM Checklist:</h1>
     <form action="/" method="post">
         <label for="name">Company Name:</label><br>
         <input type="text" id="name" name="name" required><br>
-        <label for="Vin">VIN:</label><br>
-        <input type="text" id="Vin" name="Vin / Serial Number" pattern="[A-Za-z0-9]{1,17}" required><br>
+        <label for="Vin">Last 6 of Vin/Engine Serial #</label><br>
+        <input type="text" id="Vin" name="Vin / Serial Number" required><br>
         <label for="filter">Filter:</label><br>
-        <input type="checkbox" id="air-filter" name="filter" value="air-filter">
+        <input type="checkbox" id="air-filter" name="air-filter" value="air-filter">
         <label for="air-filter">Air Filter</label><br>
-        <input type="checkbox" id="oil-filter" name="filter" value="oil-filter">
+        <input type="checkbox" id="oil-filter" name="oil-filter" value="oil-filter">
         <label for="oil-filter">Oil Filter</label><br>
-        <input type="checkbox" id="fuel-filter" name="filter" value="fuel-filter">
+        <input type="checkbox" id="fuel-filter" name="fuel-filter" value="fuel-filter">
         <label for="fuel-filter">Fuel Filter</label><br>
-        <input type="checkbox" id="fuel-water-separator" name="filter" value="fuel-water-separator">
+        <input type="checkbox" id="fuel-water-separator" name="fuel-water-separator-filter"
+            value="fuel-water-separator">
         <label for="fuel-water-separator">Fuel Water Separator</label><br>
-        <input type="checkbox" id="oil" name="filter" value="oil">
+        <input type="checkbox" id="oil" name="oil-filter" value="oil">
         <label for="oil">Oil</label><br>
-        <label for="oil-quantity">Jugs or Buckets?</label><br>
-        <input type="radio" id="1-gallon" name="oil-quantity" value="1-gallon">
-        <label for="1-gallon">1 Gallon</label><br>
-        <input type="radio" id="5-gallons" name="oil-quantity" value="5-gallons">
-        <label for="5-gallons">5 Gallons</label><br>
+        <div id="oil-options" style="display: none;">
+            <label for="oil-quantity">Jugs or Buckets?</label><br>
+            <input type="radio" id="1-gallon" name="oil-quantity" value="1-gallon">
+            <label for="1-gallon">1 Gallon</label><br>
+            <input type="radio" id="5-gallons" name="oil-quantity" value="5-gallons">
+            <label for="5-gallons">5 Gallons</label><br>
+        </div>
         <input type="submit" value="Submit">
-        <h2>NOTICE</h2>
-        please note no other information can be submitted with this form. <br>
-        If you need further parts or assistance please continue to wait for the next parts rep <br>
+        <h3>NOTICE</h3>
+        ***please note no other information can be submitted with this form. <br>
+        If you need further assistance please continue to wait for the next parts rep<br>
+        <script>
+            document.getElementById('oil').addEventListener('change', function () {
+                if (document.getElementById('oil').checked) {
+                    document.getElementById('oil-options').style.display = 'block';
+                } else {
+                    document.getElementById('oil-options').style.display = 'none';
+                }
+
+            });
+
+            document.querySelector('input[type="submit"]').addEventListener('click', function () {
+                var name = document.getElementById('name').value;
+                var vin = document.getElementById('Vin').value;
+
+                // Check if name has more than 2 characters
+                if (name.length <= 2) {
+                    alert("Please enter a valid company name");
+                    return;
+                }
+
+                // Check if vin number has between 6 and 17 characters
+                if (vin.length < 6 || vin.length > 17) {
+                    alert("Please enter a valid VIN number or Engine Serial Number.");
+                    return;
+                }
+
+                var subject = "PM REQUEST";
+                var email = "orders@baltimorefreightliner.com";
+                var body = "Company Name: " + name + "\n";
+                body += "VIN: " + vin + "\n";
+
+                // Check if air filter is checked
+                if (document.getElementById('air-filter').checked) {
+                    body += "\nAir Filter: Yes";
+                }
 
 
+                // Check if oil filter is checked
+                if (document.getElementById('oil-filter').checked) {
+                    body += "\nOil Filter: Yes";
+                }
 
-    <script>
-    document.querySelector('input[type="submit"]').addEventListener('click', function() {
-        var subject = "PM REQUEST";
-        var email = "orders@baltimorefreightliner.com";
-        var body = "Company Name: " + document.getElementById('name').value + "\n";
-        body += "VIN: " + document.getElementById('Vin').value + "\n";
+                // Check if fuel filter is checked
+                if (document.getElementById('fuel-filter').checked) {
+                    body += "\nFuel Filter: Yes";
+                }
 
-        
-        // Check if air filter is checked
-        if (document.getElementById('air-filter').checked) {
-            body += "\nAir Filter: Yes";
-        }
-        
-        // Check if oil filter is checked
-        if (document.getElementById('oil-filter').checked) {
-            body += "\nOil Filter: Yes";
-        }
-        
-        // Check if fuel filter is checked
-        if (document.getElementById('fuel-filter').checked) {
-            body += "\nFuel Filter: Yes";
-        }
-        
-        // Check if fuel water separator is checked
-        if (document.getElementById('fuel-water-separator').checked) {
-            body += "\nFuel Water Separator: Yes";
-        }
-        
-        // Check if oil is checked
-        if (document.getElementById('oil').checked) {
-            body += "\nOil: Yes";
-            // Check if 1 gallon or 5 gallons option is selected
-            if (document.getElementById('1-gallon').checked) {
-                body += "\nOil Option: 1 Gallon jugs";
-            } else if (document.getElementById('5-gallons').checked) {
-                body += "\nOil Option: 5 Gal buckets";
-            }
-        }
-        
-        // Add more checkbox options here if needed
-        event.preventDefault();
-        document.getElementById('name').value = '';
-        document.getElementById('Vin').value = '';
-        document.getElementById('air-filter').checked = false;
-        document.getElementById('oil-filter').checked = false;
-        document.getElementById('fuel-filter').checked = false;
-        document.getElementById('fuel-water-separator').checked = false;
-        document.getElementById('oil').checked = false;
-        // Reset more checkbox options here if needed
-         
-        window.location.href = "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-    });
-    </script>
+
+                // Check if fuel water separator is checked
+                if (document.getElementById('fuel-water-separator').checked) {
+                    body += "\nFuel Water Separator: Yes";
+                }
+                //check if oil is checked and if so which option is selected
+                if (document.getElementById('oil').checked) {
+                    var oilQuantity = document.querySelector('input[name="oil-quantity"]:checked');
+                    if (oilQuantity) {
+                        body += "\nOil:";
+                        if (oilQuantity.value === '1-gallon') {
+                            body += "\nOil Gallon Jugs: ";
+                        } else {
+                            body += "\nOil Buckets";
+                        }
+                    }
+                }
+                document.getElementById('name').value = '';
+                document.getElementById('Vin').value = '';
+                document.getElementById('air-filter').checked = false;
+                document.getElementById('oil-filter').checked = false;
+                document.getElementById('fuel-filter').checked = false;
+                document.getElementById('fuel-water-separator').checked = false;
+                document.getElementById('oil').checked = false;
+                window.location.href = "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+                //window.location.href = "submitted.html";
+                //clear <body> and display a message about order submitted 
+                document.body.innerHTML = "<h1><p>Thank you for submitting an order.</h1> <br> <h2>Please wait for a confirmation email and proceed<br> to the rear of the building to retrieve your order from willcall.</h2><br><H1><strong>PLEASE NOTE: CREDIT CARDS ONLY, NO CASH AT WILLCALL!!.</strong></p></H1>";
+            });
+        </script>
 </body>
+
 </html>
